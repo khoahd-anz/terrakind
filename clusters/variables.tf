@@ -17,13 +17,13 @@ variable "clusters" {
 
   validation {
     condition = alltrue(
-        [
-            for cluster in var.clusters : alltrue(
-                [for node in cluster.nodes : contains(
-                    ["control-plane", "worker"], node.role)
-                ]
-            )
-        ]
+      [
+        for cluster in var.clusters : alltrue(
+          [for node in cluster.nodes : contains(
+            ["control-plane", "worker"], node.role)
+          ]
+        )
+      ]
     )
     error_message = "Invalid node type, nodes can only be \"control-plane\" or \"worker\"."
   }
