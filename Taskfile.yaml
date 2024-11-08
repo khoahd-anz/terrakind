@@ -1,0 +1,17 @@
+version: "3"
+
+vars:
+  TF_STATE_DIR: "{{ .TASKFILE_DIR }}/tf_states"
+  K8S_CONTEXT_DIR: "{{ .TASKFILE_DIR }}/contexts"
+  CLUSTER_DIR: "{{ .TASKFILE_DIR }}/clusters"
+  SERVICE_DIR: "{{ .TASKFILE_DIR }}/core_services"
+  CONFIG_DIR: "{{ .TASKFILE_DIR }}/core_config"
+
+tasks:
+  clusters:
+    desc: "Provision KIND all clusters"
+    dir: "{{ .CLUSTER_DIR }}"
+    sources: 
+      -  "{{ .CLUSTER_DIR }}/**/*"
+    cmds:
+      - terraform init && terraform apply --auto-approve
