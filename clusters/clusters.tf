@@ -1,20 +1,20 @@
 resource "kind_cluster" "this" {
   for_each = { for cluster in var.clusters : cluster.name => cluster }
 
-  name = each.value.name
-  node_image = each.value.node_image
-  wait_for_ready = true
+  name            = each.value.name
+  node_image      = "kindest/node:v1.31.0"
+  wait_for_ready  = true
   kubeconfig_path = local.k8s_config_path
 
   kind_config {
-    kind = "Cluster"
+    kind        = "Cluster"
     api_version = "kind.x-k8s.io/v1alpha4"
 
     dynamic "node" {
       for_each = each.value.nodes
 
       content {
-        role = node.value.role
+        role                   = node.value.role
         kubeadm_config_patches = node.value.kubeadm_config_patches
 
         dynamic "extra_port_mappings" {
@@ -29,5 +29,6 @@ resource "kind_cluster" "this" {
         }
       }
     }
+
   }
 }
